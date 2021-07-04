@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import Header from './Header';
 import NotesForm from './NotesForm'
 import NotesList from './NotesList'
 import './App.css'
@@ -24,7 +25,7 @@ const App =() => {
 
     return (
         <div className='app-container'>
-            <h1 className='app-title'>Note Taking App</h1>
+            <Header />
             <NotesForm onSubmit={addNote} />
             {notes.length === 0 ? <h3>No Notes</h3> : <NotesList updateNote={updateNote} removeNote={removeNote} notes={notes} />}
         </div>
