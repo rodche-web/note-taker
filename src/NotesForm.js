@@ -1,20 +1,28 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {addNote} from './redux/noteSlice';
+import {v4 as uuidv4} from 'uuid';
 
-const NotesForm = ({edit, onSubmit}) => {
+const NotesForm = ({edit, editNote}) => {
+    const dispatch = useDispatch();
     const [title, setTitle] = useState(edit ? edit.title : '')
     const [text, setText] = useState(edit ? edit.text: '')
-    const idGen = () => Math.floor(Math.random()* 100000)
 
     const addTitle = e => setTitle(e.target.value)
     const addText = e => setText(e.target.value)
-    const addNote = e => {
+    const add = e => {
         e.preventDefault()
-        onSubmit({id: idGen(), title, text})
+        if (!edit) {
+            dispatch(addNote({id: uuidv4(), title, text}))
+        }
+        if (edit) {
+            editNote({id: uuidv4(), title, text})
+        }
         setTitle('')
         setText('')
     }
     return (
-        <form onSubmit={addNote} className='app-form'>
+        <form onSubmit={add} className='app-form'>
             <input name='title' value={title} onChange={addTitle} placeholder='Add title' />
             <textarea name='text' value={text} onChange={addText} rows='4' cols='50' placeholder='Add a note' />
             {edit ? (<button className='btn btn-submit'>Update</button>) : (<button className='btn btn-submit'>Add Note</button>)}
